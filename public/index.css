@@ -1,0 +1,10 @@
+body{
+    height: 95vh;
+    width: 95vw;
+    background-color: aliceblue;
+}
+
+
+#editor{
+    margin-left: 10px;
+}
