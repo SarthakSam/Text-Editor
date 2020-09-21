@@ -7,13 +7,14 @@ window.onload = function(){
     
 
     editor.addEventListener('keydown', function(event){
+        console.log(event);
         if( isValidKey(event.keyCode) ){
-            operationsStack.push(1, event.key)
-            operationsStack.display();
+            operationsStack.push(1, event.key, getPosition())
+            // operationsStack.display();
         }
         else if( event.key == "Backspace" ){
-            operationsStack.push(2, event.target.value[event.target.value.length - 1]);
-            operationsStack.display();
+            operationsStack.push(2, event.target.value[event.target.value.length - 1], getPosition());
+            // operationsStack.display();
         }
         else if(event.key == "Delete"){
     
@@ -21,17 +22,19 @@ window.onload = function(){
         else if( event.ctrlKey){
     
         }
-        // console.log(operationsStack);
+        console.log(operationsStack);
     });
     
     undo.addEventListener('click', function(){
         let element = operationsStack.pop();
         if(element.operation == 1){
-            editor.value = editor.value.substring(0, editor.value.length - element.value.length);
+            editor.value = editor.value.substring(0, element.index) + editor.value.substring(element.index + element.value.length);
+            // editor.value.substring(0, editor.value.length - element.value.length);
         }else if(element.operation == 2){
-            editor.value = editor.value + element.value;
+            // editor.value = editor.value + element.value;
+            editor.value = editor.value.substring(0, element.index) + element.value + editor.value.substring(element.index + 1)
         }
-        // console.log(operationsStack);
+        console.log(operationsStack);
     })
     
     
@@ -44,10 +47,13 @@ window.onload = function(){
             (keycode > 185 && keycode < 193) || // ;=,-./` (in order)
             (keycode > 218 && keycode < 223) || // [\]' (in order)
             keycode == 9;   // tab
-    
         return valid;
     }
     
+    function getPosition(){
+        // console.log(editor.selectionStart, editor.selectionEnd);
+        return editor.selectionStart;
+    }
 }
 
 

@@ -2,7 +2,7 @@ class Operation{
     constructor(operation, value, index){
         this.operation = operation;
         this.value = value;
-        // this.index = index;
+        this.index = index;
     }
 }
 
@@ -21,22 +21,23 @@ class Stack{
         return this.arr[this.arr.length - 1];
     }
 
-    push( operation, value ){
+    push( operation, value, index ){
         if(this.isEmpty())
-            this.arr.push( new Operation( operation, value ) );
+            this.arr.push( new Operation( operation, value, index ) );
         else{
             let prevOperation = this.top();
-            if( prevOperation.operation == operation && prevOperation.value.length < 4){
+            console.log(prevOperation, value, index);
+            if( prevOperation.operation == operation && prevOperation.value.length < this.buffer && Math.abs(prevOperation.index - index) ==  prevOperation.value.length){
                 prevOperation.value = prevOperation.value + value;
             }
             else{
-                this.arr.push( new Operation( operation, value ) );
+                this.arr.push( new Operation( operation, value, index ) );
             }
         }    
     }
     pop(){
         if(this.isEmpty())
-            return new Operation( -1, "");
+            return new Operation( -1, "", -1);
         return this.arr.pop();    
     }
 
